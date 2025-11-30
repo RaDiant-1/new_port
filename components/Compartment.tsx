@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { SuperPower } from '../types';
-import { ChevronDown, ExternalLink, Star, Zap } from 'lucide-react';
+import { ChevronDown, ExternalLink, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CompartmentProps {
   power: SuperPower;
-  themeColor: string;
+  themeColor: 'tech' | 'magic';
 }
 
 export const Compartment: React.FC<CompartmentProps> = ({ power, themeColor }) => {
@@ -12,108 +13,138 @@ export const Compartment: React.FC<CompartmentProps> = ({ power, themeColor }) =
 
   const isTech = themeColor === 'tech';
   
+  // Dynamic Styles
   const borderColor = isTech ? 'border-tech-blue' : 'border-magic-crimson';
-  const shadowColor = isTech ? 'shadow-[0_0_10px_#00f0ff_inset]' : 'shadow-[0_0_10px_#9f1239_inset]';
   const textColor = isTech ? 'text-tech-blue' : 'text-magic-crimson';
-  const bgColor = isTech ? 'bg-tech-dark' : 'bg-stone-900';
-  const fontTitle = isTech ? 'font-tech' : 'font-medieval';
+  const bgColor = isTech ? 'bg-black/80' : 'bg-black/60';
+  const fontFamily = isTech ? 'font-mono' : 'font-cinzel';
 
   return (
-    <div 
+    <motion.div 
+      layout
       className={`
-        game-card relative w-full transition-all duration-500 ease-in-out
-        border-2 ${borderColor} ${bgColor}
-        ${isExpanded ? 'col-span-1 md:col-span-2 row-span-2' : 'col-span-1'}
-        rounded-lg overflow-hidden group
-        hover:shadow-2xl
+        relative w-full
+        ${isExpanded ? 'md:col-span-2 row-span-auto' : 'col-span-1'}
+        rounded-lg transition-all duration-300
       `}
     >
-      {/* Skill Node Connector Line (Visual only) */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-4 bg-gray-700 -mt-4 z-0"></div>
-
-      {/* Header / Card Face */}
-      <div 
-        onClick={() => setIsExpanded(!isExpanded)}
-        className="cursor-pointer p-4 md:p-6 flex flex-col items-center justify-center min-h-[180px] md:min-h-[220px] text-center relative z-10"
+      <motion.div
+        layout
+        onClick={() => !isExpanded && setIsExpanded(true)}
+        className={`
+          relative border-2 ${borderColor} ${bgColor} 
+          rounded-lg overflow-hidden cursor-pointer backdrop-blur-sm
+          ${!isExpanded ? 'hover:scale-[1.02] hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]' : ''}
+          transition-all duration-300
+        `}
       >
-        {/* Level Badge */}
-        <div className={`absolute top-2 right-2 text-[10px] md:text-xs font-bold px-2 py-1 rounded ${isTech ? 'bg-tech-blue text-black' : 'bg-royal-gold text-black'}`}>
-          LVL {power.levelReq}
-        </div>
-
-        {/* Icon Container */}
-        <div className={`
-          relative p-3 md:p-5 rounded-full border-2 ${borderColor} mb-3 md:mb-4 bg-black 
-          transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110
-          ${shadowColor}
-        `}>
-          <power.icon className={`w-6 h-6 md:w-8 md:h-8 ${textColor}`} />
-        </div>
-
-        <h3 className={`text-lg md:text-2xl ${fontTitle} font-bold text-parchment mb-2 tracking-wide uppercase`}>
-          {power.name}
-        </h3>
-        
-        <p className="font-body text-gray-400 text-xs md:text-sm max-w-[95%] md:max-w-[90%] mb-4 line-clamp-2">
-          {power.description}
-        </p>
-
-        {/* Interaction Prompt */}
-        <div className={`
-          mt-auto flex items-center gap-2 text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity
-          ${isTech ? 'text-tech-blue' : 'text-royal-gold'}
-        `}>
-          <span>{isExpanded ? 'Collapse' : 'Inspect Skill'}</span>
-          <ChevronDown className={`transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`} size={14} />
-        </div>
-      </div>
-
-      {/* Expanded Content (Skill Details) */}
-      <div className={`
-        bg-black/80 backdrop-blur-sm border-t border-white/10
-        transition-all duration-500 overflow-hidden
-        ${isExpanded ? 'max-h-[800px] md:max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}
-      `}>
-        <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {power.subPowers.map((sub) => (
-            <div key={sub.id} className={`
-              border p-3 md:p-4 rounded bg-white/5 hover:bg-white/10 transition-colors
-              ${isTech ? 'border-tech-blue/30' : 'border-magic-crimson/30'}
-            `}>
-              <div className="flex justify-between items-start mb-2">
-                <h4 className={`text-base md:text-lg ${fontTitle} ${isTech ? 'text-tech-blue' : 'text-royal-gold'}`}>
-                  {sub.name}
-                </h4>
-                {sub.link && <ExternalLink size={14} className="text-gray-500 hover:text-white" />}
-              </div>
-              
-              <div className="flex items-center gap-4 mb-3 text-xs text-gray-500">
-                <div className="flex items-center gap-1">
-                   {[...Array(5)].map((_, i) => (
-                     <Star key={i} size={10} className={i < (sub.rank || 0) ? "text-yellow-500 fill-yellow-500" : "text-gray-700"} />
-                   ))}
-                </div>
-                {sub.manaCost && (
-                  <div className="flex items-center gap-1 text-blue-400">
-                    <Zap size={10} className="fill-blue-400" />
-                    <span>{sub.manaCost} MP</span>
-                  </div>
-                )}
-              </div>
-
-              <p className="text-xs md:text-sm font-body text-gray-300 mb-3">{sub.description}</p>
-              
-              <div className="flex flex-wrap gap-2">
-                {sub.tags.map(tag => (
-                  <span key={tag} className="text-[10px] uppercase font-bold px-2 py-1 bg-black rounded border border-white/10 text-gray-400">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+        {/* Card Header / Minimized View */}
+        <motion.div layout="position" className="p-5 flex flex-col md:flex-row gap-4 items-start md:items-center">
+          
+          {/* Icon Box */}
+          <motion.div layout className={`p-3 rounded border ${borderColor} bg-black/50 shrink-0`}>
+            <power.icon className={`w-8 h-8 ${textColor}`} />
+          </motion.div>
+          
+          <div className="flex-1 w-full">
+            <div className="flex justify-between items-center w-full mb-1">
+              <motion.h3 layout className={`text-xl font-bold text-white ${fontFamily}`}>
+                {power.name}
+              </motion.h3>
+              {/* Level Badge */}
+              <motion.span layout className={`text-xs px-2 py-0.5 border ${borderColor} rounded ${textColor} bg-${themeColor === 'tech' ? 'blue' : 'red'}-900/20`}>
+                LVL {power.level}
+              </motion.span>
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
+
+            {/* Progress Bar (Visual Flair) */}
+            <motion.div layout className="w-full h-1 bg-white/10 rounded-full mt-2 mb-2 overflow-hidden">
+               <motion.div 
+                 initial={{ width: 0 }} 
+                 animate={{ width: `${power.level}%` }} 
+                 transition={{ duration: 1.5, delay: 0.2 }}
+                 className={`h-full ${isTech ? 'bg-tech-blue' : 'bg-magic-crimson'}`} 
+               />
+            </motion.div>
+
+            {/* Preview Description */}
+            {!isExpanded && (
+               <motion.p 
+                 initial={{ opacity: 0 }} 
+                 animate={{ opacity: 1 }} 
+                 exit={{ opacity: 0 }}
+                 className="text-sm text-gray-400 font-body line-clamp-2"
+               >
+                 {power.description}
+               </motion.p>
+            )}
+          </div>
+
+          <div className="absolute top-4 right-4 md:static">
+             <motion.button 
+               animate={{ rotate: isExpanded ? 180 : 0 }}
+               className={`p-1 rounded-full hover:bg-white/10 ${textColor}`}
+             >
+               <ChevronDown size={20} />
+             </motion.button>
+          </div>
+        </motion.div>
+
+        {/* Expanded Content */}
+        <AnimatePresence>
+          {isExpanded && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="border-t border-white/10"
+            >
+              <div className="p-5 bg-black/40">
+                <p className={`text-sm md:text-base text-gray-300 font-body mb-6 italic border-l-2 ${borderColor} pl-4`}>
+                   {power.description}
+                </p>
+
+                <div className="grid grid-cols-1 gap-3">
+                  {power.subPowers.map((sub, i) => (
+                    <motion.div 
+                       key={sub.id}
+                       initial={{ opacity: 0, x: -10 }}
+                       animate={{ opacity: 1, x: 0 }}
+                       transition={{ delay: i * 0.1 }}
+                       className="p-3 rounded bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-colors"
+                    >
+                       <div className="flex justify-between items-start">
+                          <h4 className={`font-bold ${textColor} ${fontFamily} mb-1`}>{sub.name}</h4>
+                          {sub.link && <ExternalLink size={14} className="text-gray-500 hover:text-white" />}
+                       </div>
+                       <p className="text-xs md:text-sm text-gray-400 mb-2">{sub.description}</p>
+                       <div className="flex flex-wrap gap-2">
+                         {sub.tags.map(tag => (
+                           <span key={tag} className="text-[10px] px-1.5 py-0.5 bg-black rounded text-gray-500 font-mono">
+                             {tag}
+                           </span>
+                         ))}
+                       </div>
+                    </motion.div>
+                  ))}
+                </div>
+                
+                <div className="mt-4 flex justify-end">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      setIsExpanded(false);
+                    }}
+                    className={`text-xs uppercase font-bold hover:underline ${textColor}`}
+                  >
+                    Close Compartment
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
   );
 };

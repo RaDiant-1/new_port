@@ -1,75 +1,87 @@
 import React from 'react';
-import { User, Shield, Zap, Heart, Brain } from 'lucide-react';
+import { Sword, Feather, User, Battery, Zap, Menu } from 'lucide-react';
 import { RealmType } from '../types';
+import { motion } from 'framer-motion';
 
-interface HudProps {
+interface CharacterHUDProps {
   realm: RealmType;
+  toggleRealm: () => void;
+  toggleQuestLog: () => void;
 }
 
-export const CharacterHUD: React.FC<HudProps> = ({ realm }) => {
+export const CharacterHUD: React.FC<CharacterHUDProps> = ({ realm, toggleRealm, toggleQuestLog }) => {
   const isTech = realm === RealmType.TECHNICAL;
 
-  const barColor1 = isTech ? 'bg-stamina-green' : 'bg-health-red';
-  const barColor2 = isTech ? 'bg-tech-blue' : 'bg-mana-blue';
-  
-  const label1 = isTech ? 'SYSTEM INTEGRITY' : 'LIFE FORCE';
-  const label2 = isTech ? 'PROCESSING POWER' : 'MANA POOL';
-
-  const avatarBorder = isTech ? 'border-tech-blue' : 'border-royal-gold';
-  const bgStyle = isTech ? 'bg-tech-dark/90 border-tech-blue' : 'bg-void-dark/90 border-royal-gold';
-  const font = isTech ? 'font-tech' : 'font-medieval';
-
   return (
-    <div className={`fixed top-2 left-2 md:top-4 md:left-4 z-50 flex items-center gap-3 md:gap-4 p-2 md:p-4 rounded-lg border-2 backdrop-blur-md transition-all duration-500 shadow-xl ${bgStyle} max-w-[95vw] md:max-w-none`}>
-      
-      {/* Avatar Frame */}
-      <div className={`relative w-12 h-12 md:w-16 md:h-16 rounded border-2 ${avatarBorder} overflow-hidden shrink-0`}>
-        <img 
-          src={isTech ? "https://picsum.photos/seed/tech/200" : "https://picsum.photos/seed/magic/200"} 
-          alt="Avatar" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute bottom-0 right-0 bg-black text-white text-[10px] md:text-xs px-1 font-bold">Lvl 24</div>
-      </div>
-
-      {/* Stats */}
-      <div className="flex flex-col gap-1 md:gap-2 min-w-[140px] md:min-w-[200px]">
-        {/* Name & Class */}
-        <div className={`flex justify-between items-end ${font}`}>
-          <span className={`text-sm md:text-lg font-bold ${isTech ? 'text-tech-blue' : 'text-royal-gold'}`}>
-            {isTech ? 'OPERATOR_ZERO' : 'GRAND ALCHEMIST'}
+    <motion.div 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      className={`fixed top-0 left-0 right-0 z-50 px-4 py-2 border-b-2 transition-colors duration-500 flex items-center justify-between
+        ${isTech ? 'bg-black/90 border-tech-blue/50 text-tech-blue' : 'bg-black/90 border-royal-gold/50 text-royal-gold'}
+      `}
+    >
+      {/* Left: Avatar & Level */}
+      <div className="flex items-center gap-3">
+        <div className={`w-10 h-10 md:w-12 md:h-12 border-2 rounded-lg flex items-center justify-center overflow-hidden bg-black
+           ${isTech ? 'border-tech-blue' : 'border-royal-gold'}
+        `}>
+           <User size={24} />
+        </div>
+        <div className="hidden md:flex flex-col">
+          <span className={`text-xs font-bold uppercase tracking-widest ${isTech ? 'font-mono' : 'font-cinzel'}`}>
+             {isTech ? 'Operator' : 'Warlock'} Lvl. 42
           </span>
-          <span className="text-[10px] md:text-xs text-gray-400 hidden sm:inline">
-            {isTech ? 'Class: Cyber-Paladin' : 'Class: Void Warlock'}
-          </span>
-        </div>
-
-        {/* HP Bar */}
-        <div className="w-full h-2 md:h-3 bg-black/50 rounded-full border border-gray-700 relative overflow-hidden group">
-          <div className={`h-full ${barColor1} w-[85%] transition-all duration-1000 relative`}>
-            <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-white/30 to-transparent"></div>
+          <div className="w-24 h-2 bg-gray-800 rounded-full mt-1 overflow-hidden">
+            <div className={`h-full w-[70%] ${isTech ? 'bg-green-500' : 'bg-purple-500'}`}></div>
           </div>
-          <span className="absolute top-0 left-2 text-[6px] md:text-[8px] text-white/80 font-mono leading-2 md:leading-3">{label1} 85%</span>
-        </div>
-
-        {/* MP Bar */}
-        <div className="w-full h-2 md:h-3 bg-black/50 rounded-full border border-gray-700 relative overflow-hidden">
-          <div className={`h-full ${barColor2} w-[60%] transition-all duration-1000 relative`}>
-             <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-l from-white/30 to-transparent"></div>
-          </div>
-          <span className="absolute top-0 left-2 text-[6px] md:text-[8px] text-white/80 font-mono leading-2 md:leading-3">{label2} 60%</span>
         </div>
       </div>
-      
-      {/* Stat Icons (Hidden on very small mobile) */}
-      <div className="hidden lg:flex flex-col gap-1 ml-2">
-        <div className="flex items-center gap-1 text-gray-400 text-xs font-mono" title="Defense">
-           <Shield size={12} /> 120
+
+      {/* Middle: Bars (Mobile: Hidden or Simplified) */}
+      <div className="flex-1 max-w-md mx-4 hidden sm:flex flex-col gap-1">
+        <div className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-wider">
+           <Battery size={12} className="text-red-500" /> HP (Caffeine)
         </div>
-        <div className="flex items-center gap-1 text-gray-400 text-xs font-mono" title="Intelligence">
-           <Brain size={12} /> 255
+        <div className="w-full h-1.5 bg-gray-900 rounded-full overflow-hidden border border-white/10">
+           <div className="h-full w-[90%] bg-red-600 shadow-[0_0_10px_red]"></div>
+        </div>
+        <div className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-wider mt-1">
+           <Zap size={12} className="text-blue-500" /> MP (Mana)
+        </div>
+        <div className="w-full h-1.5 bg-gray-900 rounded-full overflow-hidden border border-white/10">
+           <div className="h-full w-[60%] bg-blue-600 shadow-[0_0_10px_blue]"></div>
         </div>
       </div>
-    </div>
+
+      {/* Right: Actions */}
+      <div className="flex items-center gap-3">
+        <button 
+          onClick={toggleQuestLog}
+          className={`hidden md:block px-4 py-1.5 border text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all
+            ${isTech ? 'border-tech-blue text-tech-blue font-mono' : 'border-royal-gold text-royal-gold font-medieval'}
+          `}
+        >
+          Quest Log
+        </button>
+
+        <button 
+           onClick={toggleQuestLog} 
+           className="md:hidden p-2 border rounded hover:bg-white/10"
+        >
+           <Menu size={18} />
+        </button>
+
+        <button 
+          onClick={toggleRealm}
+          className={`
+            relative p-2 border-2 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_currentColor]
+            ${isTech ? 'border-tech-blue text-tech-blue bg-tech-blue/10' : 'border-magic-crimson text-magic-crimson bg-magic-crimson/10'}
+          `}
+          title="Switch Realm"
+        >
+          {isTech ? <Sword size={20} /> : <Feather size={20} />}
+        </button>
+      </div>
+    </motion.div>
   );
 };

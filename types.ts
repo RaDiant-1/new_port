@@ -9,12 +9,9 @@ export interface SubPower {
   id: string;
   name: string;
   description: string;
-  details?: string;
   link?: string;
   image?: string;
   tags: string[];
-  rank?: number; // 1-5 stars
-  manaCost?: number; // Game flavor
 }
 
 export interface SuperPower {
@@ -23,18 +20,26 @@ export interface SuperPower {
   icon: LucideIcon;
   description: string;
   subPowers: SubPower[];
-  alignment: RealmType;
-  levelReq: number; // Game flavor
+  alignment: RealmType; 
+  level: number; // For gamification
 }
 
 export interface Quest {
   id: string;
   title: string;
   description: string;
-  reward: string;
-  status: 'ACTIVE' | 'COMPLETED' | 'LOCKED';
-  type: 'MAIN' | 'SIDE';
-  icon: LucideIcon;
+  reward: string; // e.g., "XP +500", "New Skill"
+  status: 'ACTIVE' | 'COMPLETED';
+  tags: string[];
+  link?: string;
+}
+
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  date?: string;
+  link?: string;
 }
 
 export interface ChatMessage {

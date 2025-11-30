@@ -1,69 +1,70 @@
 import { 
+  Code, 
   Cpu, 
   Sparkles, 
+  Palette, 
   Shield, 
-  Palette,
-  Sword, 
-  Scroll, 
-  Map,
-  Target,
-  Trophy,
-  Zap
+  Zap,
+  Database,
+  Globe
 } from 'lucide-react';
-import { RealmType, SuperPower, Quest } from './types';
+import { RealmType, SuperPower, Quest, Certificate } from './types';
 
 export const SUPER_POWERS: SuperPower[] = [
   // TECHNICAL REALM
   {
     id: 'frontend-fortress',
-    name: 'Fortress of Frontend',
+    name: 'Frontend Fortress',
     icon: Shield,
     description: 'Constructing impenetrable user interfaces with modern React architecture.',
     alignment: RealmType.TECHNICAL,
-    levelReq: 5,
+    level: 99,
     subPowers: [
       {
         id: 'react-mastery',
-        name: 'React 18 Architecture',
+        name: 'React 19 Architecture',
         description: 'Advanced patterns, Hooks, and Suspense boundaries.',
         tags: ['React', 'TypeScript', 'Performance'],
-        rank: 5,
-        manaCost: 40,
-        image: 'https://picsum.photos/400/300?grayscale'
       },
       {
         id: 'tailwind-masonry',
-        name: 'Tailwind Masonry',
+        name: 'Tailwind Mastery',
         description: 'Rapid UI development with utility-first CSS strategies.',
         tags: ['CSS', 'Responsive', 'Design Systems'],
-        rank: 4,
-        manaCost: 25
+      },
+      {
+        id: 'state-sorcery',
+        name: 'State Management Sorcery',
+        description: 'Implementing robust state solutions like Redux or Zustand.',
+        tags: ['Redux', 'Zustand', 'Context API'],
+      },
+      {
+        id: 'api-rituals',
+        name: 'API Integration Rituals',
+        description: 'Seamlessly connecting to backend services and RESTful APIs.',
+        tags: ['REST', 'GraphQL', 'Axios'],
       }
     ]
   },
   {
     id: 'backend-bastion',
-    name: 'Bastion of Backend',
-    icon: Cpu,
+    name: 'Backend Bastion',
+    icon: Database,
     description: 'Server-side logic, API gateways, and database management.',
     alignment: RealmType.TECHNICAL,
-    levelReq: 8,
+    level: 75,
     subPowers: [
       {
         id: 'node-necromancy',
         name: 'Node.js Necromancy',
         description: 'Breathing life into servers and microservices.',
         tags: ['Node', 'Express', 'NestJS'],
-        rank: 4,
-        manaCost: 50
       },
       {
         id: 'db-dungeons',
-        name: 'Dungeon Databases',
+        name: 'SQL Vaults',
         description: 'Structuring data within SQL and NoSQL vaults.',
         tags: ['PostgreSQL', 'Mongo', 'Redis'],
-        rank: 3,
-        manaCost: 35
       }
     ]
   },
@@ -71,28 +72,23 @@ export const SUPER_POWERS: SuperPower[] = [
   // ALTER EGO REALM
   {
     id: 'prompt-alchemy',
-    name: 'Alchemy of Prompts',
+    name: 'Prompt Alchemy',
     icon: Sparkles,
     description: 'Transmuting natural language into digital gold via LLMs.',
     alignment: RealmType.ALTER_EGO,
-    levelReq: 12,
+    level: 88,
     subPowers: [
       {
         id: 'visual-spells',
         name: 'Visual Incantations',
         description: 'Generative art workflows using Midjourney and Gemini.',
         tags: ['GenAI', 'Art', 'Diffusers'],
-        rank: 5,
-        manaCost: 100,
-        image: 'https://picsum.photos/400/300?blur=2'
       },
       {
         id: 'text-weaving',
         name: 'Narrative Weaving',
         description: 'Storytelling engines and persona constraints.',
         tags: ['LLM', 'Creative Writing', 'Gemini'],
-        rank: 4,
-        manaCost: 60
       }
     ]
   },
@@ -102,15 +98,13 @@ export const SUPER_POWERS: SuperPower[] = [
     icon: Palette,
     description: 'Breaking grid systems to create unique, memorable experiences.',
     alignment: RealmType.ALTER_EGO,
-    levelReq: 7,
+    level: 60,
     subPowers: [
       {
         id: 'ui-sorcery',
         name: 'UI Sorcery',
         description: 'Animations, micro-interactions, and 3D web elements.',
         tags: ['Three.js', 'Framer Motion', 'WebGL'],
-        rank: 3,
-        manaCost: 80
       }
     ]
   }
@@ -119,44 +113,50 @@ export const SUPER_POWERS: SuperPower[] = [
 export const QUESTS: Quest[] = [
   {
     id: 'q1',
-    title: 'The Enterprise Refactor',
-    description: 'Migrate the legacy monolith to a micro-frontend architecture.',
-    reward: 'Title: System Architect',
-    status: 'ACTIVE',
-    type: 'MAIN',
-    icon: Sword
+    title: "The E-Commerce Monolith",
+    description: "Rebuild a legacy storefront using Next.js and Shopify headless API.",
+    reward: "Mastery of Headless Commerce",
+    status: 'COMPLETED',
+    tags: ['Next.js', 'Shopify', 'GraphQL'],
+    link: '#'
   },
   {
     id: 'q2',
-    title: 'The AI Integration',
-    description: 'Imbue the platform with generative intelligence.',
-    reward: '+2500 Mana',
+    title: "SaaS Dashboard of Infinity",
+    description: "Create a real-time analytics dashboard processing million of events.",
+    reward: "+500 Experience",
     status: 'ACTIVE',
-    type: 'MAIN',
-    icon: Zap
+    tags: ['React', 'D3.js', 'WebSockets'],
+    link: '#'
   },
   {
     id: 'q3',
-    title: 'Learn Rust',
-    description: 'Master the ancient tongue of safety and speed.',
-    reward: 'New Skill Tree',
-    status: 'LOCKED',
-    type: 'SIDE',
-    icon: Scroll
-  },
-  {
-    id: 'q4',
-    title: 'Launch Indie Game',
-    description: 'Release "The Dual Soul" on Steam.',
-    reward: 'Achievement: Game Dev',
+    title: "The Generative Grimorie",
+    description: "An AI-powered spellbook that generates bedtime stories for goblins.",
+    reward: "Creativity +10",
     status: 'COMPLETED',
-    type: 'SIDE',
-    icon: Trophy
+    tags: ['Gemini API', 'OpenAI', 'Next.js'],
+    link: '#'
   }
 ];
 
-export const CERTIFICATES = [
-  { title: "Grandmaster of React", issuer: "Meta Guild" },
-  { title: "Cloud Architect", issuer: "Google Citadel" },
-  { title: "Prompt Engineer Level V", issuer: "OpenAI Tower" }
+export const CERTIFICATES: Certificate[] = [
+  {
+    id: 'c1',
+    title: 'Advanced React Patterns',
+    issuer: 'Frontend Masters',
+    date: '2023'
+  },
+  {
+    id: 'c2',
+    title: 'Google Cloud Professional Architect',
+    issuer: 'Google Cloud',
+    date: '2024'
+  },
+  {
+    id: 'c3',
+    title: 'Creative Coding with WebGL',
+    issuer: 'Awwwards Academy',
+    date: '2022'
+  }
 ];
