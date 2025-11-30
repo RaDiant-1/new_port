@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Dual Soul Chronicles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=MedievalSharp&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              medieval: ['MedievalSharp', 'cursive'],
+              cinzel: ['Cinzel', 'serif'],
+              body: ['Lato', 'sans-serif'],
+              tech: ['"Share Tech Mono"', 'monospace'],
+            },
+            colors: {
+              'void-dark': '#0a0a0a',
+              'parchment': '#f0e6d2',
+              'parchment-dark': '#c0b298',
+              'royal-gold': '#d4af37',
+              'royal-gold-dim': '#8a7020',
+              'tech-blue': '#00f0ff',
+              'tech-dark': '#001a1d',
+              'tech-grid': '#0a2e33',
+              'magic-purple': '#a855f7',
+              'magic-crimson': '#9f1239',
+              'health-red': '#ef4444',
+              'mana-blue': '#3b82f6',
+              'stamina-green': '#22c55e',
+            },
+            backgroundImage: {
+              'noise': "url('https://www.transparenttextures.com/patterns/stardust.png')",
+            },
+            animation: {
+              'glow': 'glow 3s ease-in-out infinite alternate',
+              'float': 'float 6s ease-in-out infinite',
+              'scanline': 'scanline 8s linear infinite',
+              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              glow: {
+                '0%': { boxShadow: '0 0 5px #d4af37' },
+                '100%': { boxShadow: '0 0 20px #d4af37, 0 0 10px #d4af37' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              scanline: {
+                '0%': { backgroundPosition: '0 0' },
+                '100%': { backgroundPosition: '0 100%' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: #f0e6d2;
+        overflow-x: hidden;
+      }
+      
+      /* RPG Scrollbars */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #444; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #666; 
+      }
+
+      /* Tech Realm CRT Effect */
+      .crt::before {
+        content: " ";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+        z-index: 2;
+        background-size: 100% 2px, 3px 100%;
+        pointer-events: none;
+      }
+
+      /* Game Card Hover Effect */
+      .game-card {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      .game-card:hover {
+        transform: translateY(-5px) scale(1.02);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
