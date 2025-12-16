@@ -18,6 +18,9 @@ export const Compartment: React.FC<CompartmentProps> = ({ power, themeColor }) =
   const textColor = isTech ? 'text-tech-blue' : 'text-magic-crimson';
   const bgColor = isTech ? 'bg-black/80' : 'bg-black/60';
   const fontFamily = isTech ? 'font-mono' : 'font-cinzel';
+  
+  // Colors for hover effect (Tech Blue / Magic Crimson)
+  const glowHex = isTech ? '#00f0ff' : '#9f1239';
 
   return (
     <motion.div 
@@ -30,11 +33,11 @@ export const Compartment: React.FC<CompartmentProps> = ({ power, themeColor }) =
     >
       <motion.div
         layout
-        onClick={() => !isExpanded && setIsExpanded(true)}
+        onClick={() => setIsExpanded(!isExpanded)}
         className={`
           relative border-2 ${borderColor} ${bgColor} 
           rounded-lg overflow-hidden cursor-pointer backdrop-blur-sm
-          ${!isExpanded ? 'hover:scale-[1.02] hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]' : ''}
+          ${!isExpanded ? `hover:scale-[1.02] hover:shadow-[0_0_20px_${glowHex}]` : ''}
           transition-all duration-300
         `}
       >
@@ -112,6 +115,7 @@ export const Compartment: React.FC<CompartmentProps> = ({ power, themeColor }) =
                        animate={{ opacity: 1, x: 0 }}
                        transition={{ delay: i * 0.1 }}
                        className="p-3 rounded bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-colors"
+                       onClick={(e) => e.stopPropagation()} 
                     >
                        <div className="flex justify-between items-start">
                           <h4 className={`font-bold ${textColor} ${fontFamily} mb-1`}>{sub.name}</h4>
